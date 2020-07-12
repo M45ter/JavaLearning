@@ -7,7 +7,10 @@ public class StopThread implements Runnable {
     @Override
     public void run() {
         int count = 0;
+        System.out.println("before while isInterrupted = " + Thread.currentThread().isInterrupted());
         while (!Thread.currentThread().isInterrupted() && count < 1000) {
+          //static的interrupted()也能检测中断，但是会清除interrupted，也就是重新设置为false
+//        while (!Thread.interrupted() && count < 1000) {
             System.out.println("count = " + count++);
 
             //当在一个被阻塞的线程（调用sleep或wait等会让线程阻塞的方法）上调用interrupt方法时
@@ -24,6 +27,7 @@ public class StopThread implements Runnable {
 
             //用volatile boolean标志去中断线程是错误的原因，线程被阻塞时无法及时感知标志修改
         }
+        System.out.println("after while isInterrupted = " + Thread.currentThread().isInterrupted());
     }
 
     public static void main(String[] args) throws InterruptedException {
